@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<link rel="stylesheet" href="/static/css/style_s.css">
+
+<!-- <section class="text-gray-600 body-font">
+  <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
+    <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6 mb-10 md:mb-0">
+      <img class="object-cover object-center rounded" alt="hero" src="{{user.avatar.url}}">
+    </div>
+    <div class="lg:flex-grow  md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center">
+      <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900"> {{user.first_name|upper}} {{user.last_name}} </h1>
+      <h2 class=" mb-10 hidden font-sans italic text-xl lg:inline-block">{{user.username}}</h2>
+      {% if user.bio %}
+      <p class="mb-10  leading-relaxed">{{user.bio}}</p>
+      {% else %}
+      <p class="mb-10 leading-relaxed">No Bio Available</p>
+      {% endif %}
+        
+      <div class="flex justify-center">
+        <button class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Button</button>
+        <button class="ml-4 inline-flex text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded text-lg">Button</button>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+
+
+
+<section class="text-gray-600 body-font">
+    <div class="container px-5 py-24 mx-auto flex flex-wrap">
+      <div class="flex flex-wrap -mx-4 mt-auto mb-auto lg:w-1/2 sm:w-2/3 content-start sm:pr-10">
+        <div class="w-full sm:p-4 px-4 mb-6">
+          <h1 class="title-font font-medium text-xl mb-2 text-gray-900">Moon hashtag pop-up try-hard offal truffaut</h1>
+          <div class="leading-relaxed">Pour-over craft beer pug drinking vinegar live-edge gastropub, keytar neutra sustainable fingerstache kickstarter.</div>
+        </div>
+        <div class="p-4 sm:w-1/2 lg:w-1/4 w-1/2">
+          <h2 class="title-font font-medium text-3xl text-gray-900">2.7K</h2>
+          <p class="leading-relaxed">Views</p>
+        </div>
+        <div class="p-4 sm:w-1/2 lg:w-1/4 w-1/2">
+          <h2 class="title-font font-medium text-3xl text-gray-900">1.8K</h2>
+          <p class="leading-relaxed">Forums</p>
+        </div>
+        <div class="p-4 sm:w-1/2 lg:w-1/4 w-1/2">
+          <h2 class="title-font font-medium text-3xl text-gray-900">35</h2>
+          <p class="leading-relaxed">Ratings</p>
+        </div>
+      </div>
+      <div class="lg:w-1/2 sm:w-1/3 w-full md:items-end rounded-lg overflow-hidden mt-6 sm:mt-0">
+        <img  class="object-cover rounded  object-center w-full lg:w-3/6 md:w-3/6 w-5/6 mb-10" src="{{user.avatar.url}}" alt="stats">
+      </div>
+    </div>
+</section>
+
+<!-- <div class="py-8 px-8 max-w-sm mx-auto bg-white rounded-xl shadow-lg space-y-2 sm:py-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-6">
+    <img class="block mx-auto h-24 rounded-full sm:mx-0 sm:shrink-0" src="/img/erin-lindford.jpg" alt="Woman's Face">
+    <div class="text-center space-y-2 sm:text-left">
+      <div class="space-y-0.5">
+        <p class="text-lg text-black font-semibold">
+          Erin Lindford
+        </p>
+        <p class="text-slate-500 font-medium">
+          Product Engineer
+        </p>
+      </div>
+      <button class="px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">Message</button>
+    </div>
+  </div> -->
+
+
+
+
+{% endblock content %}

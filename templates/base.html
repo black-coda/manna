@@ -6,7 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href=" {% static 'css/style_s.css' %} ">
-    <title>Document</title>
+    {% if manna.title %}
+    <title>{{manna.title}}</title>
+    {% else %}
+    <title> Manna|Libre </title>
+    {% endif %}
+   
 </head>
 <body>
   
@@ -88,9 +93,11 @@
    </div>
    {% endif %}
 
+ 
 
 
 
+    
     {% block content %}
 
 

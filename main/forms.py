@@ -8,15 +8,10 @@ class MannaForm(ModelForm):
     class Meta:
         model = Manna
         exclude = ['user','slug', 'created','updated']
-
-
-
-    def keyverses_clean(self):
-        data = self.cleaned_data.get('keyverses')
         
-        if ':' not in data:
-            raise ValidationError(_('key verses refers to pages in the bible, so must contain ":"'), code='Invalid')
-        return data
+
+
+
 
 
 class RegisterForm(UserCreationForm):

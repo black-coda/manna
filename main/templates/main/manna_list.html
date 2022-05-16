@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} 
+{% load hitcount_tags %}
+{% block content %}
 
 <section class="text-gray-600 body-font overflow-hidden">
   <div class="container px-5 py-24 mx-auto">
@@ -53,7 +55,7 @@
             >
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
               <circle cx="12" cy="12" r="3"></circle></svg
-            >1.2K
+            >{% get_hit_count for manna %}
           </span>
           <span
             class="text-gray-400 inline-flex items-center leading-none text-sm"
@@ -75,13 +77,13 @@
         </div>
         <a class="inline-flex items-center">
           <img
-            alt="blog"
-            src="https://dummyimage.com/104x104"
+            alt="{{manna.user.first_name}}"
+            src="{{manna.user.avatar.url}}"
             class="w-12 h-12 rounded-full flex-shrink-0 object-cover object-center"
           />
           <span class="flex-grow flex flex-col pl-4">
             <span class="title-font font-medium text-gray-900"
-              >{{manna.user.first_name}}</span
+              >{{manna.user.get_full_name}}</span
             >
             <span class="text-gray-400 text-xs tracking-widest mt-0.5"
               >{{manna.created|timesince}}</span
