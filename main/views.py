@@ -35,16 +35,6 @@ class MannaListView(generic.ListView):
     paginate_by = 4
 
 
-def manna_detail_view(request,slug):
-    manna = get_object_or_404(Manna, slug=slug)
-    manna_comment = manna.manna_comments.all()
-
-    context = {
-        'manna':manna,
-        'comments':manna_comment,
-    }
-    return render(request, 'main/manna_detail.html', context)
-
 class MannaDetailView(HitCountDetailView):
     model = Manna
     template_name = 'main/manna_detail.html'
@@ -52,16 +42,13 @@ class MannaDetailView(HitCountDetailView):
     count_hit = True
     context_object_name = 'manna'
 
-    # def get(self, request, *args, **kwargs):
-    #     self.object = self.get_object()
-    #     context = self.get_context_data(object=self.object)
-    #     return redirect(self.object.song.audio_file.url)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+    
         context.update({
         'popular_posts': Manna.objects.order_by('-hit_count_generic__hits')[:3],
-        # 'manna_by_author':Manna.objects.filter(user=self.user)
+        'other_manna':Manna.objects.filter()[:3]
 
         })
         return context    
@@ -70,14 +57,14 @@ class MannaDetailView(HitCountDetailView):
 def user_profile_view(request, pk):
     user = User.objects.get(id=pk)
     manna = user.manna_set.all()
-    print(manna)
+    
 
     context = {
         'user':user,
         'manna':manna
 
     }
-    return render(request, 'profile.html')
+    return render(request, 'profile.html', context)
 
 
 

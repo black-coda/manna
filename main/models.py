@@ -15,6 +15,10 @@ class User(AbstractUser):
     email = models.EmailField(max_length=255, unique=True)
     avatar = models.ImageField(upload_to=user_directory_path, null=True, blank=True, default = 'default/avatar.svg')
     bio = models.TextField(blank=True, null=True)
+
+
+    def get_absolute_url(self):
+        return reverse("profile", args = [str(self.id)])
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -32,6 +36,8 @@ class Manna(models.Model):
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     hit_count_generic = GenericRelation(HitCount, object_id_field='object_pk',
      related_query_name='hit_count_generic_relation')
+    
+    bible_verses = models.CharField(max_length=200, help_text='Enter boble verses used in the blog, with each seperated by a comma', null=True)
 
     class Meta:
         verbose_name_plural = 'manna'
