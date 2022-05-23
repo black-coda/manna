@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import (index_view, create_manna_view, MannaListView,MannaDetailView, password_reset_view)
+from .views import (index_view, create_manna_view, MannaListView,MannaDetailView,)
 
 
 urlpatterns = [
@@ -8,6 +8,7 @@ urlpatterns = [
    path('manna-detail/<slug:slug>/', MannaDetailView.as_view(), name='detail-view'),
    path('manna-list/', MannaListView.as_view(), name='list-view'),
    path('hitcount/', include(('hitcount.urls', 'hitcount'), namespace='hitcount')),
+
    ]
 
 
