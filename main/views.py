@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import redirect, render
-from main.forms import MannaForm, RegisterForm
+from main.forms import MannaForm, RegisterForm, UpdateMannaForm, UserProfileUpdateForm
 from main.models import Manna, User
 from django.contrib.auth import authenticate, login, logout
 from django.views import generic
@@ -11,48 +11,123 @@ from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 import requests
+from django.core.exceptions import PermissionDenied
+from django.contrib.auth.views import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 
 
 def index_view(request):
     return render(request, 'index.html')
 
 
+@login_required(login_url='login-view')
 def create_manna_view(request):
+    # is_cached = ('data' in request.session())
+
+    global response
+
     form = MannaForm()
+
     if request.method == "POST":
         form = MannaForm(request.POST)
         if form.is_valid():
-            bible_verses = form.cleaned_data.get('bible_verses')
-            chapter = int(form.cleaned_data.get('chapter_of_bible_verse'))
+            bible_verses = form.cleaned_data.get('bible_verses').capitalize()
+            chapter = form.cleaned_data.get('chapter_of_bible_verse')
             verse = form.cleaned_data.get('verse_of_chapter')
+            title = form.cleaned_data.get('title')
+            if '-' in verse:
+                chapter = int(chapter)
+                verse = verse.split('-')
+                verseFrom = int(verse[0])
+                verseTo = int(verse[1])
+                url = "https://ajith-holy-bible.p.rapidapi.com/GetVerses"
+                querystring = {"VerseTo": verseTo, "VerseFrom": verseFrom, "chapter": chapter, "Book": bible_verses}
+                headers = {
+                    "X-RapidAPI-Host": "ajith-holy-bible.p.rapidapi.com",
+                    "X-RapidAPI-Key": "be532bde6cmsh60515fab6019230p1ab77djsn2e6ba45ca46d"
+                }
+                response = requests.request("GET", url, headers=headers, params=querystring)
+            else:
+                chapter = str(chapter)
+                verse = str(verse)
+                url = "https://multilingual-bible.p.rapidapi.com/kingjames/bible/english/bookName/chapter/verse"
 
-            verse = verse.split('-')
-            verseFrom = int(verse[0])
-            verseTo = int(verse[1])
+                querystring = {"bookName": bible_verses, "chapter": chapter, "verse": verse}
 
-            url = "https://ajith-holy-bible.p.rapidapi.com/GetVerses"
+                headers = {
+                    "X-RapidAPI-Key": "be532bde6cmsh60515fab6019230p1ab77djsn2e6ba45ca46d",
+                    "X-RapidAPI-Host": "multilingual-bible.p.rapidapi.com"
+                }
 
-            querystring = {"VerseTo": verseTo, "VerseFrom": verseFrom, "chapter": chapter, "Book": bible_verses}
+                response = requests.request("GET", url, headers=headers, params=querystring)
 
-            headers = {
-                "X-RapidAPI-Host": "ajith-holy-bible.p.rapidapi.com",
-                "X-RapidAPI-Key": "be532bde6cmsh60515fab6019230p1ab77djsn2e6ba45ca46d"
-            }
+            if response.status_code == 200:
+                data = response.json()
+                print(data)
+                manna = form.save(commit=False)
+                if not isinstance(data,list):
+                    if data.has_key('Output'):
+                        manna.display_verse = data['Output']
+                        manna.user = request.user
+                        manna.save()
+                else:
+                    manna.display_verse = data[0]['text']
+                    manna.user = request.user
+                    manna.save()
 
-            response = requests.request("GET", url, headers=headers, params=querystring)
+                messages.success(request, f"{title} has been created 😁😉 ")
 
-            data = response.json()
-            manna = form.save(commit=False)
-            manna.display_verse = data['Output']
-            manna.user = request.user
-            manna.save()
+                return redirect('dashboard')
+            else:
+                if response.status_code == 404 or 500:
+                    messages.error(request, 'Invalid Bible verse')
+                else:
+                    manna = form.save(commit=False)
+                    manna.user = request.user
+                    manna.save()
+                    messages.success(request, f"{title} has been created without bible verse display please edit post")
+                    return redirect('dashboard')
 
-            return redirect('dashboard')
     return render(request, 'trial.html', {'form': form})
 
 
+@login_required(login_url='login-view')
 def update_manna_view(request, pk):
-    pass
+    manna = Manna.objects.get(id=pk)
+    update_form = UpdateMannaForm(instance=manna)
+
+    if request.user != manna.user:
+        raise PermissionDenied
+
+    if request.method == "POST":
+        update_form = UpdateMannaForm(request.POST, instance=manna)
+
+        if update_form.is_valid():
+            update_form.save()
+            return redirect('profile', username=request.user.username)
+    context = {
+        'form': update_form
+    }
+    return render(request, 'trial.html', context)
+
+
+@login_required(login_url='login-view')
+def update_user_view(request, username):
+    user = User.objects.get(username=username)
+    if request.user.id != user.id:
+        raise PermissionDenied
+
+    form = UserProfileUpdateForm(instance=user)
+
+    if request.method == "POST":
+        form = UserProfileUpdateForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+
+            return redirect('profile', username=request.user.username)
+    context = {'form': form}
+    return render(request, 'trial.html', context)
 
 
 # def delete_obj(request,pk):
@@ -88,8 +163,9 @@ class MannaDetailView(HitCountDetailView):
         return context
 
 
-def user_profile_view(request, pk):
-    user = User.objects.get(id=pk)
+@login_required(login_url='login-view')
+def user_profile_view(request, username):
+    user = User.objects.get(username=username)
     manna = user.manna_set.all()
 
     context = {
@@ -136,7 +212,6 @@ def register_view(request):
 
     if request.method == 'POST':
         form = RegisterForm(request.POST)
-        print(request.POST)
         if form.is_valid():
             user_form = form.save(commit=False)
             user_form.first_name = user_form.first_name.capitalize()

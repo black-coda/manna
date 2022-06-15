@@ -9,7 +9,6 @@ class MannaAdmin(admin.ModelAdmin):
     list_filter = ('created', 'user')
     search_fields = ('title', 'user')
     prepopulated_fields = {'slug': ('title',)}
-    raw_id_fields = ('user',)
     date_hierarchy = 'created'
     ordering = ('-updated', '-created')
 
@@ -19,7 +18,7 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
         (None, {
             "fields": (
-                'avatar',
+                'avatar','bio'
             ),
         }),
     )
@@ -27,7 +26,7 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = UserAdmin.add_fieldsets + (
         (None, {
             "fields": (
-                'email', 'avatar',
+                'email', 'avatar','bio'
             ),
         }),
     )

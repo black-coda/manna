@@ -16,4 +16,13 @@ class RegisterForm(UserCreationForm):
         fields = ['email', 'first_name', 'last_name', 'username', 'password1', 'password2', ]
 
 
+class UpdateMannaForm(ModelForm):
+    class Meta:
+        model = Manna
+        exclude = ['user', 'slug', 'created', 'display_verse', 'updated']
 
+
+class UserProfileUpdateForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'avatar', 'bio']
