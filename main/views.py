@@ -66,7 +66,7 @@ def create_manna_view(request):
                 data = response.json()
                 print(data)
                 manna = form.save(commit=False)
-                if not isinstance(data,list):
+                if not isinstance(data, list):
                     if data.has_key('Output'):
                         manna.display_verse = data['Output']
                         manna.user = request.user
