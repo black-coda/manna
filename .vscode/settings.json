@@ -1,4 +1,4 @@
 {
-    "editor.fontFamily": "'purisa', 'monospace', monospace",
+    "editor.fontFamily": "'Jetbrains Mono', 'monospace', monospace",
     "markdown.preview.fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif,'Fira Code'"
 }
