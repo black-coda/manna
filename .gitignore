@@ -34,6 +34,8 @@ var/
 pip-log.txt
 pip-delete-this-directory.txt
 
+
+
 # Unit test / coverage reports
 htmlcov/
 .tox/
@@ -94,3 +96,4 @@ staticfiles
 *.sqlite3
 
 templates/trial.html
+templates/static/
