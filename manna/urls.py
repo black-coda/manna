@@ -9,6 +9,7 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
+                  path('forum/', include("forum.urls")),
                   path('', RedirectView.as_view(url='dashboard/', permanent=True)),
                   path('dashboard/', include('main.urls')),
                   path('accounts/login/', login_view, name='login-view'),
@@ -17,7 +18,7 @@ urlpatterns = [
                   path('user-profile/<str:username>/', user_profile_view, name='profile'),
                   path('user-profile/<str:username>/update/', update_user_view, name='update_profile'),
                   path('accounts/password-reset/', ResetPasswordView.as_view(), name='password-reset-view'),
-                #   path('accounts/password-reset/',auth_views.PasswordResetView.as_view(template_name='password_reset.html') , name='password-reset'),
+                  #   path('accounts/password-reset/',auth_views.PasswordResetView.as_view(template_name='password_reset.html') , name='password-reset'),
 
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
