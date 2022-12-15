@@ -16,10 +16,11 @@ class User(AbstractUser):
     avatar = models.ImageField(upload_to=user_directory_path, null=True, blank=True, default='default/avatar.svg')
     bio = models.TextField(blank=True, null=True)
 
+
     def get_absolute_url(self):
         return reverse("profile", args=[str(self.username)])
 
-    USERNAME_FIELD = 'email'
+    # USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
 
@@ -38,7 +39,7 @@ class Manna(models.Model):
 
     bible_verses = models.CharField(max_length=200,
                                     help_text='Enter the book of the bible(in full please like Hebrew)',
-                                    null=True)
+                                    null=True, blank=True)
     chapter_of_bible_verse = models.IntegerField(blank=True, null=True)
 
     verse_of_chapter = models.CharField(blank=True, null=True, max_length=20)
