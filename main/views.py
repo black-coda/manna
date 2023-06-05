@@ -170,7 +170,7 @@ def user_profile_view(request, username):
 
     context = {
         'user': user,
-        'manna': manna
+        'mannas': manna
 
     }
     return render(request, 'profile.html', context)
