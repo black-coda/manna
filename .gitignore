@@ -93,7 +93,9 @@ ENV/
 .DS_Store
 
 staticfiles
-*.sqlite3
+# *.sqlite3
 
 templates/trial.html
 templates/static/
+
+.venv
