@@ -19,3 +19,9 @@ def list_of_forums(request):
         "forums": forums
     }
     return render(request, "forum_list.html", context)
+
+
+#TODO: contine from the detail_view
+def forum_detail_view(request, forum_slug):
+    forum_instance = Forum.objects.get(slug=forum_slug)
+    pass
